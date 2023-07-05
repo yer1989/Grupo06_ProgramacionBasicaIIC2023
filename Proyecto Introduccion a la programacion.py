@@ -6,13 +6,13 @@
 import getpass 
 
 #Variables
-listausuario = []
-listacontrasena = []
-listanombre = []
-listadivisa = []
+listaUsuario = []
+listaContrasena = []
+listaNombre = []
+listaDivisa = []
 
 
-def registrousuario() :
+def registroUsuario() :
     op = ""
     contador = 0
     while len(op) < 5 :
@@ -21,13 +21,13 @@ def registrousuario() :
             print("Por favor, ingrese un usuario con 5 caracteres o mas")
             contador += 1 
         else:
-            listausuario.append(op)
+            listaUsuario.append(op)
         if contador == 3 :
             print("Ha alcanzado el limite de intentos")
             return
     
     op = input("Ingrese su nombre:")
-    listanombre.append(op)
+    listaNombre.append(op)
 
     op = ""
     while len(op) < 6 :
@@ -35,7 +35,7 @@ def registrousuario() :
         if len(op) < 6 :
             print("Por favor, ingrese una contraseña de 6 caracteres o mas")
         else:
-            listacontrasena.append(op)
+            listaContrasena.append(op)
     monto = 0 
     op = ""
     contador = 0
@@ -73,11 +73,11 @@ def registrousuario() :
 
             if contador == 3:
                 print("Limite alcanzado en el deposito, por favor vuelva a iniciar")
-                listacontrasena.pop()
-                listanombre.pop()
-                listausuario.pop()
+                listaContrasena.pop()
+                listaNombre.pop()
+                listaUsuario.pop()
                 return
-    listadivisa.append(monto)
+    listaDivisa.append(monto)
 
     print("Transaccion realizada satisfactoriamente, su saldo es de: "+str(monto)+" dolares ")
 
@@ -94,7 +94,7 @@ while opcion != "4":
     opcion = input("Seleccione una opción: ")
 
     if opcion == "1":
-        registrousuario()
+        registroUsuario()
     elif opcion == "2":
         print("dreamworldcasino()")
     elif opcion == "3":
