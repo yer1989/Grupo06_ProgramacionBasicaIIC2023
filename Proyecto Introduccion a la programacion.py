@@ -7,7 +7,7 @@ listaContrasena = []
 listaNombre = []
 listaDivisa = []
 
-# Load user information from a text file
+
 def loaduserData():
     try:
         with open("user_data.txt", "r") as file:
@@ -141,15 +141,15 @@ def blackjack_game(balance):
     username = input("Ingrese su usuario: ")
     password = getpass.getpass("Ingrese su contraseña: ")
 
-    max_attempts = 3
-    while max_attempts > 0:
+    maxAttempts = 3
+    while maxAttempts > 0:
         if username in listaUsuario and password == listaContrasena[listaUsuario.index(username)]:
             print(f"Bienvenido, {listaNombre[listaUsuario.index(username)]}!")
             break
         else:
-            max_attempts -= 1
-            print(f"Usuario o contraseña incorrectos. Intentos restantes: {max_attempts}")
-            if max_attempts == 0:
+            maxAttempts -= 1
+            print(f"Usuario o contraseña incorrectos. Intentos restantes: {maxAttempts}")
+            if maxAttempts == 0:
                 print("Se excedió el máximo de intentos para ingresar su ID, volviendo al menú principal.")
                 return
 
