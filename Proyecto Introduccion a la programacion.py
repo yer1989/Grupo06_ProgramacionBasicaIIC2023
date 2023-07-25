@@ -10,7 +10,7 @@ listaDivisa = []
 
 def loaduserData():
     try:
-        with open("user_data.txt", "r") as file:
+        with open("userData.txt", "r") as file:
             lines = file.readlines()
             for line in lines:
                 username, password, name, balance = line.strip().split(",")
@@ -24,7 +24,7 @@ def loaduserData():
 
 
 def saveuserData():
-    with open("user_data.txt", "w") as file:
+    with open("userData.txt", "w") as file:
         for i in range(len(listaUsuario)):
             file.write(f"{listaUsuario[i]},{listaContrasena[i]},{listaNombre[i]},{listaDivisa[i]}\n")
 
@@ -121,7 +121,7 @@ def dreamworldCasino():
         if gameChoice == "1":
             print("Jugar tragamonedas()")
         elif gameChoice == "2":
-            balance = blackjack_game(balance)
+            balance = blackjackGame(balance)
         elif gameChoice == "3":
             print("Saliendo del casino.")
             listaDivisa[listaUsuario.index(username)] = balance
@@ -130,7 +130,7 @@ def dreamworldCasino():
             print("Opción inválida.")
 
 
-def blackjack_game(balance):
+def blackjackGame(balance):
 
  def main():
     if not loaduserData():
