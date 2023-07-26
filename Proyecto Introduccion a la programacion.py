@@ -1,4 +1,4 @@
-import random
+import os
 import getpass
 
 # Variables
