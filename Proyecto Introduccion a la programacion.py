@@ -1,7 +1,6 @@
 #Proyecto Introduccion a la programacion 
 #Autor Grupo 6 
 
-
 import getpass 
 import os
 import random
@@ -17,6 +16,7 @@ listaDivisa = []
 usuario = {
     "usuario": "",
     "contrasena": "",
+    "nombreusuario":"",
     "dinerocuenta": ""
 }
 configAvanzada = []
@@ -62,7 +62,7 @@ def crearUsuario(usuario) :
 
         rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
         with open(rutaArchivo, "a") as archivo:
-            archivo.write("\n" + str(usuario["usuario"]) + "\n" + str(usuario["contrasena"]))
+            archivo.write("\n" + str(usuario["usuario"]) + "\n" + str(usuario["contrasena"] + "\n" +str(usuario["nombreusuario"])))
 
         return 1
     except Exception as e:
@@ -77,6 +77,14 @@ def registroUsuario() :
             print("Por favor, ingrese un usuario con 5 caracteres o mas")
             contador += 1 
         else:
+            listaUsuario = consultarUsuarios()
+            for fila in listaUsuario:
+                if fila[0] == op:
+                    print("Usuario ya existe por favor reintente nuevamente")
+                    contador += 1 
+                    op = ""
+                    break
+
             usuario["usuario"] = op
         if contador == 3 :
             print("Ha alcanzado el limite de intentos")
@@ -99,13 +107,22 @@ def registroUsuario() :
                 else:
                     print("Contraseña no coincide con la anterior ingresada, por favor intente nuevamente")
 
+    op = ""
+    
+    while len(op.strip()) == 0 :
+        op= input("Ingrese su nombre: ")
+        if len(op.strip()) == 0 :
+            print("Por favor, ingrese un nombre, el campo no puede quedar vacio.")
+        else:
+            usuario["nombreusuario"] = op
+
     monto = 0 
     op = ""
     contador = 0
     while monto < int(configAvanzada[5].strip()):
             divisa = ""
 
-            print("Realice su deposito")
+            print(f"Realice su deposito, el deposito debe ser mayor o igual a {configAvanzada[5].strip()}")
             print("1. Dolares")
             print("2. Colones")
             print("3. Bitcoin")
@@ -132,6 +149,9 @@ def registroUsuario() :
 
             else: 
                 print("Por favor, seleccione una opcion valida.")
+
+            if monto < int(configAvanzada[5].strip()):
+                print(f"Monto a depositar no puede ser menor a {configAvanzada[5].strip()}, por favor intente de nuevo.")
 
             if contador == 3:
                 print("Limite alcanzado en el deposito, por favor vuelva a iniciar.")
@@ -161,6 +181,7 @@ def dreamWorldCasino():
                 if fila[0] == op:
                     usrList.append(fila[0])
                     usrList.append(fila[1])
+                    usrList.append(fila[2])
                     validaUsuario = 1
                     break
                 
@@ -203,10 +224,10 @@ def dreamWorldCasino():
             if saldo == "error":
                 print("Se ha presentado un error obteniendo el saldo.")
                 break
-            elif len(usrList) == 2 :
+            elif len(usrList) == 3 :
                 usrList.append(float(saldo))
             else:
-                usrList[2] = float(saldo)
+                usrList[3] = float(saldo)
 
             print("1. Retirar dinero")
             print("2. Depositar dinero")
@@ -222,7 +243,7 @@ def dreamWorldCasino():
             elif opcion == "2":
                 depositarDinero(usrList)
             elif opcion == "3":
-                print(f"Su saldo actual es de: {str(usrList[2])}.")
+                print(f"Su saldo actual es de: {str(usrList[3])}.")
             elif opcion == "4":
                 opcJuego = ""
                 while opcJuego != "3":
@@ -231,16 +252,22 @@ def dreamWorldCasino():
                         print("Se ha presentado un error obteniendo el saldo.")
                         break
                     else:
-                        usrList[2] = float(saldo)
+                        usrList[3] = float(saldo)
 
+                    if float(usrList[3])==0:
+                        print("Usuario no tiene saldo disponible, por favor realizar un deposito.")
+                        break
+                    
                     print("1. Blackjack")
                     print("2. Tragamonedas")
                     print("3. Salir")
 
                     opcJuego = input("Seleccione una opción: ")
                     if opcJuego == "1":
+                        print("Reglas juegoBlackJack")
                         juegoBlackJack(usrList)
                     elif opcJuego == "2":
+                        print("Reglas MaquinaTragamonedas")
                         jugarMaquinaTragamonedas(usrList)
                     elif opcion == "3":
                         print("Volviendo al menú principal")
@@ -291,10 +318,11 @@ def consultarUsuarios():
         del usuarios[0]
 
         listaUsuario = []
-        for linea in range(0, len(usuarios), 2):
-            fila = usuarios[linea].strip()
-            fila_siguiente = usuarios[linea + 1].strip()
-            listaUsuario.append([fila, fila_siguiente])
+        for linea in range(0, len(usuarios), 3):
+            usuario = usuarios[linea].strip()
+            contrasena = usuarios[linea + 1].strip()
+            nombreUsuario = usuarios[linea + 2].strip()
+            listaUsuario.append([usuario, contrasena, nombreUsuario])
 
         return listaUsuario
     except FileNotFoundError:
@@ -307,16 +335,16 @@ def retirarDinero(usuario):
     op = ""
     contador = 0
     bandera = True
-    print(f"Su saldo actual es de: {str(usuario[2])}.")
+    print(f"{usuario[2]} tu saldo actual es de: {str(usuario[3])}.")
     while bandera :
         op = input("¿Cuanto desea retirar?: ")
-        if float(op) == 0 or float(op) > float(usuario[2]) or float(op) < 0:
+        if float(op) == 0 or float(op) > float(usuario[3]) or float(op) < 0:
             print("Por favor, ingrese un monto correcto.")
             contador += 1 
         else:
-            usuario[2] = float(usuario[2]) - float(op)
+            usuario[3] = float(usuario[3]) - float(op)
             actualizarSaldo(usuario)
-            print(f"Su retiro de dinero ha sido exitoso, su saldo actual es de: {str(usuario[2])}.")
+            print(f"Su retiro de dinero ha sido exitoso, su saldo actual es de: {str(usuario[3])}.")
             bandera = False
 
         if contador == 3 :
@@ -355,9 +383,9 @@ def depositarDinero(usuario):
         print("Por favor, seleccione una opcion valida.")
         return
 
-    usuario[2] = round(float(usuario[2]) + float(monto),2)
+    usuario[3] = round(float(usuario[3]) + float(monto),2)
     actualizarSaldo(usuario)
-    print(f"Su deposito de dinero ha sido exitoso, su aldo actual es de: {str(usuario[2])}.")
+    print(f"Su deposito de dinero ha sido exitoso, {usuario[2]} su saldo actual es de: {str(usuario[3])}.")
 
 def actualizarSaldo(usuario):
     nombreArchivo = "saldos.txt"
@@ -366,16 +394,16 @@ def actualizarSaldo(usuario):
 
     rutaArchivo = os.path.join(nombreArchivo, "..", nombreArchivo)
     with open(rutaArchivo, "a") as archivo:
-        archivo.write("\n" + str(round(usuario[2],2)))
+        archivo.write("\n" + str(round(usuario[3],2)))
     return 
 
 def juegoBlackJack(usuario):
 
-    saldo = float(usuario[2])
+    saldo = float(usuario[3])
     apuestaMinima = float(configAvanzada[4].strip())
 
     while saldo >= apuestaMinima and True:
-        apuesta = float(input(f"Tu saldo es {saldo}. ¿Cuánto deseas apostar? (mínimo {apuestaMinima}): "))
+        apuesta = float(input(f"{usuario[2]} tu saldo es {saldo}. ¿Cuánto deseas apostar? (mínimo {apuestaMinima}): "))
         if apuesta < apuestaMinima:
             print("Apuesta insuficiente. Debes apostar al menos el mínimo.")
             continue
@@ -403,13 +431,14 @@ def juegoBlackJack(usuario):
         if puedeDividir(jugadorCartas):
             jugadorCartas, cartasJuego2, saldo = dividirJugada(jugadorCartas, saldo, apuesta)
             saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo)
+            mostrarCartasJugador(cartasJuego2)
             saldo = jugarRonda(cartasJuego2, crupierCartas, apuesta, saldo)
         else:
             saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo)
-        usuario[2] = saldo
+        usuario[3] = saldo
         actualizarSaldo(usuario)
 
-        print(f"Tu saldo actual es de: {saldo}")
+        print(f"{usuario[2]} tu saldo actual es de: {saldo}")
 
         opcion = input("¿Deseas seguir jugando 1 Sí o 2 No? ").upper()
         if opcion != '1':
@@ -510,13 +539,13 @@ def mostrarMaquinaTragamonedas(figuras):
     print()
 
 def jugarMaquinaTragamonedas(usuario):
-    saldoActual = usuario[2]
+    saldoActual = usuario[3]
     apuestaMinima = float(configAvanzada[3].strip())
-    cantidadJugadas = 0
+    cantidadJugadas = 1
     acumulado = float(configAvanzada[2].strip())
 
     while True:
-        apuesta = float(input(f"Cuanto desea apostar? Tu saldo es de: {saldoActual}: "))
+        apuesta = float(input(f"{usuario[2]} cuanto desea apostar? Tu saldo es de: {saldoActual}: "))
         if saldoActual < apuestaMinima:
             print("No tienes suficiente dinero para jugar.")
             return
@@ -531,14 +560,15 @@ def jugarMaquinaTragamonedas(usuario):
             figuras = [random.choice(["@", "#", "+", "7"]) for _ in range(3)]
 
             figuras = ["@", "7", "#", "+"]
-            if cantidadJugadas % 5 == 0:
+            if cantidadJugadas == 5:
                 resultadoFigura = ["@"] * 3
-            elif cantidadJugadas % 10 == 0:
+            elif cantidadJugadas == 10:
                 resultadoFigura = ["#"] * 3
-            elif cantidadJugadas % 15 == 0:
+            elif cantidadJugadas == 15:
                 resultadoFigura = ["+"] * 3
-            elif cantidadJugadas % 20 == 0:
+            elif cantidadJugadas == 20:
                 resultadoFigura = ["7"] * 3
+                cantidadJugadas = 0
             else:
                 resultadoFigura = [random.choice(figuras) for _ in range(3)]
 
@@ -562,12 +592,13 @@ def jugarMaquinaTragamonedas(usuario):
 
             cantidadJugadas += 1
             
-            usuario[2] = saldoActual
+            usuario[3] = saldoActual
             actualizarSaldo(usuario)
             modificarConfigAvanzada(str(acumulado),3)
             cargaConfigAvanzada()
 
-        jugarNuevamente = input("¿Deseas jugar nuevamente? (1/2): ")
+        print(f"{usuario[2]} tu saldo actual es de: {saldoActual}")
+        jugarNuevamente = input("¿Deseas jugar nuevamente? (1 Sí o 2 No): ")
         if jugarNuevamente != '1':
             break
 
@@ -582,7 +613,7 @@ def modificarConfigAvanzada(linea, numeroLinea):
     with open(rutaArchivo, 'r') as f:
         lineas = f.readlines()
 
-    lineas[numeroLinea - 1] = linea + '\n'
+    lineas[numeroLinea - 1] = str(linea) + '\n'
 
     with open(rutaArchivo, 'w') as f:
         f.writelines(lineas)
@@ -643,18 +674,26 @@ def eliminaUsuario(usuario):
 
             rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
 
-            with open(rutaArchivo, 'r') as archivo:
-                listaUsuario = archivo.readlines()
-            
-            for i in range(len(listaUsuario)):
-                if (listaUsuario[i].strip() == usuario[0]):
-                    del listaUsuario[i]
-                    del listaUsuario[i]
-                    break
+            lstUsuarios = consultarUsuarios()
+
+
+            usuariosNuevo = []
+
+            for usuarioBusqueda in lstUsuarios:
+                if usuarioBusqueda[0] != usuario[0]:
+                    usuariosNuevo.append(usuarioBusqueda)
 
             rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
             with open(rutaArchivo, "w") as archivo:
-                archivo.writelines(listaUsuario)
+                if len(usuariosNuevo) == 0:
+                    archivo.writelines(str(pinConfigAvanzada))
+                else:
+                    archivo.writelines(str(pinConfigAvanzada)+"\n")
+
+            with open(rutaArchivo, "a") as archivo:
+                for escribirLinea in usuariosNuevo:
+                        linea = "\n".join(escribirLinea)
+                        archivo.write(str(linea))
 
             print(f"Usuario {usuario[0]} eliminado correctamente.")
 
@@ -663,10 +702,141 @@ def eliminaUsuario(usuario):
     else:
         print(f"La carpeta del usuario {usuario[0]} no existe o no es una carpeta válida.")
 
+def menuConfigAvanzada():
+    opcion = ""
+
+    while opcion != "4":
+        cargaConfigAvanzada()
+        print("1. Eliminar usuario")
+        print("2. Modificar valores del sistema")
+        print("3. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            listaUsuario = consultarUsuarios()
+            validaUsuario = 0
+            contador = 0 
+            usrList = []
+
+            if len(listaUsuario)>0:
+                op = ""
+                while len(op) < 5 :
+                    op = input("Ingrese el usuario a eliminar: ")
+                    if len(op) < 5 :
+                        print("Por favor, ingrese un usuario con 5 caracteres o mas")
+                        contador += 1 
+                    else:
+                        for fila in listaUsuario:
+                            if fila[0] == op:
+                                usrList.append(fila[0])
+                                usrList.append(fila[1])
+                                validaUsuario = 1
+                                break
+                            
+                        if validaUsuario == 0:
+                            contador += 1 
+                            print("Usuario no existe por favor reintente nuevamente")
+                    if contador == 3 :
+                        print("Se excedió el máximo de intentos para ingresar su usuario, volviendo al menú principal")
+                        return
+                    else:
+                        print("No hay usuarios registrados en el sistema")
+
+                if validaUsuario == 1:
+                    print(f"Se procedera a eliminar el usuario {usrList[0]}.")
+                    time.sleep(1.5)
+                    for i in range(1, 6):
+                        print(".", end=' ')
+                        time.sleep(1.5)
+                    print()
+                    eliminaUsuario(usrList)
+            else:
+                print("No hay usuarios registrados en el sistema.")
+
+        elif opcion == "2":
+            modificarValConfig()
+        elif opcion == "3":
+            print("")
+            break
+        else:
+            print("Por favor, seleccione una opción válida.")
+
+def modificarValConfig():
+    opcion = ""
+
+    while opcion != "4":
+        cargaConfigAvanzada()
+        print("¿Qué desea modificar?")
+        print("1. Tipo de cambio: Compra de dólares usando colones")
+        print("2. Tipo de cambio: Compra de dólares usando bitcoins")
+        print("3. Valor acumulado Tragamonedas")
+        print("4. Apuesta mínima Tragamonedas")
+        print("5. Apuesta mínima Blackjack")
+        print("6. Inversión mínima para registrarse")
+        print("7. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            print(f"Valor actual del tipo de cambio Compra de dólares usando colones: {configAvanzada[0]}")
+            tipoCambio = float(input("Ingresa el nuevo tipo de cambio:"))
+            if tipoCambio<=0:
+                print("El valor del tipo de cambio no puede ser igual o menor a 0")
+            else:
+                modificarConfigAvanzada(tipoCambio, 1)
+                print(f"El valor del tipo de cambio Compra de dólares usando colones ha sido modificado el nuevo valor es de: {tipoCambio}\n")
+        elif opcion == "2":
+            print(f"Valor actual del tipo de cambio Compra de dólares usando bitcoins: {configAvanzada[1]}")
+            tipoCambio = float(input("Ingresa el nuevo tipo de cambio:"))
+            if tipoCambio<=0:
+                print("El valor del tipo de cambio no puede ser igual o menor a 0")
+            else:
+                modificarConfigAvanzada(tipoCambio, 2)
+                print(f"El valor del tipo de cambio Compra de dólares usando bitcoins ha sido modificado el nuevo valor es de: {tipoCambio}\n")
+        elif opcion == "3":
+            print(f"Valor actual acumulado del Tragamonedas: {configAvanzada[2]}")
+            valorTragamonedas = float(input("Ingresa el nuevo valor acumulado del Tragamonedas:"))
+            if valorTragamonedas<0:
+                print("El valor del acumulado del tragamonedas no puede ser menor a 0")
+            else:
+                modificarConfigAvanzada(valorTragamonedas, 3)
+                print(f"El valor del acumulado del tragamonedas ha sido modificado el nuevo valor es de: {valorTragamonedas}\n")
+        elif opcion == "4":
+            print(f"Valor actual de la apuesta mínima del Tragamonedas: {configAvanzada[3]}")
+            valorTragamonedas = float(input("Ingresa el nuevo valor de apuesta mínima del Tragamonedas:"))
+            if valorTragamonedas<1:
+                print("El valor de apuesta mínima del tragamonedas no puede ser menor a 1")
+            else:
+                modificarConfigAvanzada(valorTragamonedas, 4)
+                print(f"El valor de apuesta mínima del tragamonedas ha sido modificado el nuevo valor es de: {valorTragamonedas}\n")
+        elif opcion == "5":
+            print(f"Valor actual de la apuesta mínima del Blackjack: {configAvanzada[4]}")
+            valorBlackjack = float(input("Ingresa el nuevo valor de apuesta mínima del Blackjack:"))
+            if valorBlackjack<1:
+                print("El valor de apuesta mínima del Blackjack no puede ser menor a 1")
+            else:
+                modificarConfigAvanzada(valorBlackjack, 4)
+                print(f"El valor de apuesta mínima del Blackjack ha sido modificado el nuevo valor es de: {valorBlackjack}\n")
+        elif opcion == "6":
+            print(f"Valor actual de la inversión mínima para registrarse: {configAvanzada[5]}")
+            inversionMinima = float(input("Ingresa el nuevo valor de inversión mínima para registrarse:"))
+            if inversionMinima<0:
+                print("El valor de registro mínimo no puede ser menor a 0")
+            else:
+                modificarConfigAvanzada(inversionMinima, 5)
+                print(f"El valor de registro mínimo ha sido modificado el nuevo valor es de: {inversionMinima}\n")
+        elif opcion == "7":
+            break
+        else:
+            print("Por favor, seleccione una opción válida.")
+    return
+
 opcion = ""
 
 while opcion != "4":
     cargaConfigAvanzada()
+    consultarUsuarios()
     print("Bienvenido al menú:")
     print("1. Registro de usuario nuevo")
     print("2. DreamWorld Casino")
@@ -680,9 +850,30 @@ while opcion != "4":
     elif opcion == "2":
         dreamWorldCasino()
     elif opcion == "3":
-        print("configuracionavanzada()")
+        contador = 0
+        while True:
+            op = ""
+            while len(op) < 6 :
+                op = getpass.getpass("Ingrese el pin especial: ")
+            if len(op) < 6 :
+                print("Por favor, ingrese un pin con 6 caracteres o mas")
+                contador += 1 
+            else:
+                if pinConfigAvanzada == op:
+                    validaUsuario = 1
+                    break
+                else:
+                    validaUsuario = 0
+                if validaUsuario == 0:
+                    contador += 1 
+                    print("PIN incorrecto por favor reintente nuevamente")
+            if contador == 3 :
+                print("Se excedió el máximo de intentos para ingresar el PIN, volviendo al menú principal")
+                break
+            
+        if validaUsuario == 1:
+            menuConfigAvanzada()
     elif opcion == "4":
         print("Gracias por participar")
     else:
         print("Por favor, seleccione una opción válida.")
-
