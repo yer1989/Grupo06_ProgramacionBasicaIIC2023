@@ -1,6 +1,8 @@
 #Proyecto Introduccion a la programacion 
 #Autor Grupo 6 
 
+
+#Se importan las librerías que permiten crear un password; crear y leer archivos (entre otras operaciones con archivos); crear números aleatorios y funciones relacionadas con el tiempo
 import getpass 
 import os
 import random
@@ -13,16 +15,22 @@ listaUsuario = []
 listaContrasena = []
 listaNombre = []
 listaDivisa = []
+
+#Estos paréntesis sirven para hacer una definición
 usuario = {
     "usuario": "",
     "contrasena": "",
     "nombreusuario":"",
     "dinerocuenta": ""
 }
+
 configAvanzada = []
 pinConfigAvanzada = ""
 
 def cargaConfigAvanzada():
+
+#Creamos el archivo en el que vamos a introduccir la información
+    
     nombreArchivo = "configuracion_avanzada.txt"
 
     carpetaPadre = os.path.abspath(os.path.dirname(__file__))
@@ -34,9 +42,9 @@ def cargaConfigAvanzada():
             configAvanzada = archivo.readlines()
         
     except FileNotFoundError:
-        print(f"No se pudo encontrar el archivo: {nombreArchivo}")
+        print("No se pudo encontrar el archivo: {}".format(nombreArchivo))
     except IOError:
-        print(f"Error al leer el archivo: {nombreArchivo}")
+        print("Error al leer el archivo: {}".format(nombreArchivo))
 
 def crearUsuario(usuario) : 
     try:
