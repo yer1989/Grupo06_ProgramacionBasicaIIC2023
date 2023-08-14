@@ -47,16 +47,19 @@ def cargaConfigAvanzada():
     except IOError:
         print("Error al leer el archivo: {}".format(nombreArchivo))
 
+#La siguiente función crea un nuevo usuario usando el diccionario definido antes, que tiene la información del usuario
 def crearUsuario(usuario) : 
     try:
-        nombreCarpeta = str(usuario["usuario"])
+        nombreCarpeta = str(usuario["usuario"]) #Se convierte la información en un string
 
         carpetaPadre = os.path.join(os.getcwd(), os.pardir, nombreCarpeta)
 
         if not os.path.exists(carpetaPadre):
             os.makedirs(carpetaPadre)
+        
         else:
             return 0
+# Lo anterior construye la ruta de la carpeta padre utilizando el nombre del usuario, se verifica si la carpeta ya existe. Si no existe, se crea. Si la carpeta ya existe, la función devuelve 0 (el usuario ya existe)
 
         nombreArchivo = "saldos.txt"
 
@@ -64,6 +67,8 @@ def crearUsuario(usuario) :
 
         with open(rutaArchivo, "w") as archivo:
             archivo.write(str(round(float(usuario["dinerocuenta"]),2)))
+            
+# Se construye la ruta del archivo "saldos.txt". Luego, se escribe el saldo de la cuenta del usuario
 
         nombreArchivo = "usuarios_pines.txt"
 
@@ -72,14 +77,17 @@ def crearUsuario(usuario) :
         rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
         with open(rutaArchivo, "a") as archivo:
             archivo.write("\n" + str(usuario["usuario"]) + "\n" + str(usuario["contrasena"] + "\n" +str(usuario["nombreusuario"])))
+# Se construye la ruta del archivo "usuarios_pines.txt". Luego, se abre el archivo y se escribe la información del usuario
 
         return 1
     except Exception as e:
         return 0
+# 1 para registro exitoso
 
+# La siguiente función permite al usuario registrarse en el sistema 
 def registroUsuario() :
-    op = ""
-    contador = 0
+    op = "" # Almacena las opciones ingresadas por el usuario 
+    contador = 0 # Permite contar los intentos fallidos, y con la siguiente estructura cíclica se solicita la información al usuario (nombre de usuario). Si el usuario falla cinco veces habrá alcanzado el límite de intentos
     while len(op) < 5 :
         op = input("Ingrese su usuario: ")
         if len(op) < 5 :
@@ -99,8 +107,7 @@ def registroUsuario() :
             print("Ha alcanzado el limite de intentos")
             return
 
-    op = ""
-    
+    op = "" # Se usa la misma estructura que en el caso anterior, pero en este caso la estructura cíclica se repite hasta que el usuario ingrese una contraseña de más de 6 caracteres. Luego pide la confirmación de la contraseña    
     while len(op) < 6 :
         op= getpass.getpass("Ingrese su contraseña: ")
         if len(op) < 6 :
