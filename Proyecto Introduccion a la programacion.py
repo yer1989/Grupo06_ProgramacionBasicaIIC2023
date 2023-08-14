@@ -16,7 +16,7 @@ listaContrasena = []
 listaNombre = []
 listaDivisa = []
 
-#Estos paréntesis sirven para hacer una definición
+#Estos paréntesis sirven para hacer una definición, esto es a lo que se le llama un "diccionario" y nos permite usar las definiciones como argumentos de otras funciones
 usuario = {
     "usuario": "",
     "contrasena": "",
@@ -29,17 +29,18 @@ pinConfigAvanzada = ""
 
 def cargaConfigAvanzada():
 
-#Creamos el archivo en el que vamos a introduccir la información
+#Definimos el archivo en el que vamos a almacenar la información, que en este caso es llamado "configuración_avanzada.txt"
     
-    nombreArchivo = "configuracion_avanzada.txt"
+    nombreArchivo = "configuracion_avanzada.txt" # Se 
 
     carpetaPadre = os.path.abspath(os.path.dirname(__file__))
-
     rutaArchivo = os.path.join(carpetaPadre, "..", nombreArchivo)
-    global configAvanzada
+#estos dos últimos métodos permiten establecer la ruta de la carpeta en la que se encuentra el archivo actual de ejecución del script y la ruta absoluta de la carpeta.
+    
+    global configAvanzada # la variable configAvanzada se utilizará para almacenar las líneas leídas desde el archivo
     try:
         with open(rutaArchivo, 'r') as archivo:
-            configAvanzada = archivo.readlines()
+            configAvanzada = archivo.readlines() # este método permite leer todas las líneas del archivo y almacenarlas en la variable
         
     except FileNotFoundError:
         print("No se pudo encontrar el archivo: {}".format(nombreArchivo))
