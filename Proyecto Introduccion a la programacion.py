@@ -238,14 +238,14 @@ def dreamWorldCasino():
 
         while opcion != "6":
 
-            saldo = consultarSaldo(usrList[0])
+            saldo = consultarSaldo(usrList[0]) # Recuperamos el saldo del usuario asociado a su nombre
             if saldo == "error":
                 print("Se ha presentado un error obteniendo el saldo.")
                 break
-            elif len(usrList) == 3 :
+            elif len(usrList) == 3 : # Si longitud de ursList es igual a 3, entonces no hay un saldo para ese usuario aún
                 usrList.append(float(saldo))
             else:
-                usrList[3] = float(saldo)
+                usrList[3] = float(saldo) # Se extrae el saldo (cuarta posición en la lista)
 
             print("1. Retirar dinero")
             print("2. Depositar dinero")
@@ -255,7 +255,7 @@ def dreamWorldCasino():
             print("6. Salir")
 
             opcion = input("Seleccione una opción: ")
-
+# Dependiendo de la opción escogida por el usuario, se llama a las funciones correspondientes
             if opcion == "1":
                 retirarDinero(usrList)
             elif opcion == "2":
@@ -275,7 +275,8 @@ def dreamWorldCasino():
                     if float(usrList[3])==0:
                         print("Usuario no tiene saldo disponible, por favor realizar un deposito.")
                         break
-                    
+                        
+    # Si el usuario escoge lo juegos en línea, entonces se le presenta las dos opciones que ofrece DreamWorld Casino
                     print("1. Blackjack")
                     print("2. Tragamonedas")
                     print("3. Salir")
