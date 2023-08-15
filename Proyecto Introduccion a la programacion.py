@@ -123,7 +123,7 @@ def registroUsuario() :
                 else:
                     print("Contraseña no coincide con la anterior ingresada, por favor intente nuevamente")
 
-    op = ""
+    op = "" #ciclo que se repite hasta que el usuario ingrese un nombre (no se puede continuar sin nombre
     
     while len(op.strip()) == 0 :
         op= input("Ingrese su nombre: ")
@@ -132,13 +132,14 @@ def registroUsuario() :
         else:
             usuario["nombreusuario"] = op
 
-    monto = 0 
+    monto = 0 # Se crea la variable "monto" y con el siguiente ciclo se solicita al usuario que ingrese un monto
     op = ""
-    contador = 0
+    contador = 0 #Este contador mide el número de intentos
     while monto < int(configAvanzada[5].strip()):
             divisa = ""
 
-            print(f"Realice su deposito, el deposito debe ser mayor o igual a {configAvanzada[5].strip()}")
+#Se le solicita al usuario que escoja el tipo de divisa, y dependiendo de la divisa se establece el monto mínimo
+            print(f"Realice su deposito, el deposito debe ser mayor o igual a {configAvanzada[5].strip()}") 
             print("1. Dolares")
             print("2. Colones")
             print("3. Bitcoin")
@@ -172,18 +173,18 @@ def registroUsuario() :
             if contador == 3:
                 print("Limite alcanzado en el deposito, por favor vuelva a iniciar.")
                 return
-    usuario["dinerocuenta"] = monto
-
-    if crearUsuario(usuario) == 1 :
+    usuario["dinerocuenta"] = monto #El monto se guarda en el diccionario creado para el usuario ("usuario"), bajo "dinerocuenta"
+    
+    if crearUsuario(usuario) == 1 : #En el caso de que el registro haya sido exitoso (en la función anterior), y el monto guardado, se imprime el siguiente mensaje
         print(f"Transaccion realizada satisfactoriamente, su saldo es de: ${str(monto)}.")
     else :
         print("Error al guardar el usuario.")
 
 def dreamWorldCasino():
-    listaUsuario = consultarUsuarios()
+    listaUsuario = consultarUsuarios() # Tomamos la información de usuario llamando a la función "consultarUsuarios" que sigue a esta función
     validaUsuario = 0
-    contador = 0 
-    usrList = []
+    contador = 0  # Contador de intentos
+    usrList = [] # Guarda la información de usuario válido en una lista
 
     if len(listaUsuario)>0:
         op = ""
@@ -192,15 +193,16 @@ def dreamWorldCasino():
         if len(op) < 5 :
             print("Por favor, ingrese un usuario con 5 caracteres o mas")
             contador += 1 
+# Si el nombre de usuario no cumple con el requisito de 5 caracteres mínimo, se repite el ciclo y se solicita la información de nuevo y se incrementa el contador de intentos
         else:
             for fila in listaUsuario:
                 if fila[0] == op:
                     usrList.append(fila[0])
                     usrList.append(fila[1])
                     usrList.append(fila[2])
-                    validaUsuario = 1
+                    validaUsuario = 1 # Si el usuario existe, se asigna 1 a "validaUsuario"
                     break
-                
+# Si el nombre de usuario cumple con el mínimo, se agrega a la lista temporal             
             if validaUsuario == 0:
                 contador += 1 
                 print("Usuario no existe por favor reintente nuevamente")
@@ -211,7 +213,7 @@ def dreamWorldCasino():
         print("No hay usuarios registrados en el sistema")
 
     contador = 0 
-    if validaUsuario == 1:
+    if validaUsuario == 1: #Dado que el nombre de usuario es correcto el usuario debe ingresar su pin, que debe tener 6 caracteres mínimo. Si no cumple con este requisito, se muestra un mensaje y se incrementa el contador de intentos.
         op = ""
         while len(op) < 6 :
             op = getpass.getpass("Ingrese el pin del usuario: ")
@@ -219,7 +221,7 @@ def dreamWorldCasino():
             print("Por favor, ingrese un pin con 6 caracteres o mas")
             contador += 1 
         else:
-            if usrList[1] == op:
+            if usrList[1] == op: # Si el pin coincide con el almacenado en la lista entonces el valor se mantiene en 1
                 validaUsuario = 1
             else:
                 validaUsuario = 0
@@ -230,9 +232,9 @@ def dreamWorldCasino():
             print("Se excedió el máximo de intentos para ingresar su PIN, volviendo al menú principal")
             return
     
-    if validaUsuario == 1:
+    if validaUsuario == 1: # Si "validaUsuario" es igual a 1, entonces el usuario entre a DreamWorld Casino, y se despliega el menú
         print("Bienvenido " + usrList[0] + " a DreamWorld Casino!")
-        opcion = ""
+        opcion = "" # En esta variable se guarda la opción que se escoge en el menu
 
         while opcion != "6":
 
