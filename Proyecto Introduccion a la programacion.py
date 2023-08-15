@@ -276,7 +276,7 @@ def dreamWorldCasino():
                         print("Usuario no tiene saldo disponible, por favor realizar un deposito.")
                         break
                         
-    # Si el usuario escoge lo juegos en línea, entonces se le presenta las dos opciones que ofrece DreamWorld Casino
+    # Si el usuario escoge lo juegos en línea, entonces se le presenta las tres opciones que ofrece DreamWorld Casino
                     print("1. Blackjack")
                     print("2. Tragamonedas")
                     print("3. Salir")
@@ -293,7 +293,7 @@ def dreamWorldCasino():
                     else:
                         print("Por favor, seleccione una opción válida.")
             elif opcion == "5":
-                resultado = procesoEliminarUsuario(usrList)
+                resultado = procesoEliminarUsuario(usrList) 
                 if resultado == "1":
                     break
                 else:
@@ -304,11 +304,11 @@ def dreamWorldCasino():
                 print("Por favor, seleccione una opción válida.")
 
 def consultarSaldo(usuario):
-    nombreArchivo = os.path.join(os.pardir, usuario, "saldos.txt")
-
+    nombreArchivo = os.path.join(os.pardir, usuario, "saldos.txt") # Ruta al archivo "saldos.txt" dentro de un directorio que lleva el nombre del usuario (cada usuario tendrá su propia carpeta)
+  
     def obtenerUltimoRegistro(archivo):
-        with open(archivo, "r") as archivo_txt:
-            lineas = archivo_txt.readlines()
+        with open(archivo, "r") as archivo_txt: # Abre el archivo en modo lectura
+            lineas = archivo_txt.readlines() # Almacena todas las líneas del archivo en la variable "lineas"
             if lineas:
                 return lineas[-1]
             else:
