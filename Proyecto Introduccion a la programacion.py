@@ -234,7 +234,7 @@ def dreamWorldCasino():
     
     if validaUsuario == 1: # Si "validaUsuario" es igual a 1, entonces el usuario entre a DreamWorld Casino, y se despliega el menú
         print("Bienvenido " + usrList[0] + " a DreamWorld Casino!")
-        opcion = "" # En esta variable se guarda la opción que se escoge en el menu
+        opcion = "" # En esta variable se guarda la opción que se escoge en el menu. El usuario seguirá en el menú (por medio de la ciclo while, que sigue hasta que el usuario desee salir)
 
         while opcion != "6":
 
