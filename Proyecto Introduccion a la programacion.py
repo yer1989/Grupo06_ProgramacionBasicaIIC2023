@@ -450,19 +450,19 @@ def juegoBlackJack(usuario):
             opcion = input("¿Deseas doblar tu apuesta 1? ").upper()
 
         if opcion == '1':
-            if saldo >= apuesta * 2:
+            if saldo >= apuesta * 2: # Si el usuario elige doblar su apuesta (opción 1), el programa verifica si el saldo es suficiente para realizar la apuesta duplicada. Si es posible, la apuesta se duplica y se actualiza la variable apuesta
                 apuesta *= 2
                 print(f"Apostaste el doble: {apuesta}")
             else:
                 print("Saldo insuficiente para doblar la apuesta.")
 
-        if puedeDividir(jugadorCartas):
+        if puedeDividir(jugadorCartas): # Si el ususrio escoge la opción de dividir, se llama a la función dividirJugada (más adelante) para dividir su mano en dos manos separadas
             jugadorCartas, cartasJuego2, saldo = dividirJugada(jugadorCartas, saldo, apuesta)
-            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo)
-            mostrarCartasJugador(cartasJuego2)
+            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo) # Se llama a la función jugarRonda para jugar una ronda con las cartas del jugador y del crupier (ver función más adelante)
+            mostrarCartasJugador(cartasJuego2) # segunda ronda
             saldo = jugarRonda(cartasJuego2, crupierCartas, apuesta, saldo)
         else:
-            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo)
+            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo) # El usuario no dividió la mano
         usuario[3] = saldo
         actualizarSaldo(usuario)
 
@@ -482,7 +482,7 @@ def generarCarta():
     return f"{valor} de {naipe}"
 
 def valorMano(cartas):
-    valores = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 1}
+    valores = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 1} # valor de A?
     valor = sum(valores[carta.split()[0]] for carta in cartas)
     return valor
 
@@ -494,23 +494,24 @@ def mostrarCartasJugador(cartas):
 def puedeDividir(cartas):
     return len(cartas) == 2 and cartas[0].split()[0] == cartas[1].split()[0]
 
+# La siguiente función 
 def dividirJugada(cartas, saldo, apuesta):
-    if len(cartas) != 2 or cartas[0].split()[0] != cartas[1].split()[0]:
+    if len(cartas) != 2 or cartas[0].split()[0] != cartas[1].split()[0]: # verifica si las cartas son iguales y por lo tanto se pueden dividir
         print("No puedes dividir la jugada en este momento.")
         return cartas, saldo
 
-    if saldo < apuesta:
+    if saldo < apuesta: # Si el saldo no es suficiente para dividir
         print("Saldo insuficiente para dividir la jugada.")
         return cartas, saldo
 
-    nuevaCarta1 = generarCarta()
+    nuevaCarta1 = generarCarta() # Se llama a la función generarCarta para generar las dos nuevas cartas en caso de que sí se pueda dividir
     nuevaCarta2 = generarCarta()
 
     print("Dividiendo la jugada...")
-    print(f"Juego 1: {cartas[0]} y {nuevaCarta1}")
+    print(f"Juego 1: {cartas[0]} y {nuevaCarta1}") 
     print(f"Juego 2: {cartas[1]} y {nuevaCarta2}")
 
-    cartasJuego1 = [cartas[0], nuevaCarta1]
+    cartasJuego1 = [cartas[0], nuevaCarta1] # Se combinan las nuevas cartas con las que ya habían
     cartasJuego2 = [cartas[1], nuevaCarta2]
 
     return cartasJuego1, cartasJuego2, saldo - apuesta
