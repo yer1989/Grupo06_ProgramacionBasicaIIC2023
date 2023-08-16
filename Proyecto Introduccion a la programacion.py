@@ -646,19 +646,19 @@ def modificarConfigAvanzada(linea, numeroLinea):
     rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
 
     with open(rutaArchivo, 'r') as f:
-        lineas = f.readlines()
+        lineas = f.readlines() # Se lee todo el contenido del archivo y devuelve una lista en la que cada elemento es una línea del archivo, esto se le asigna a la variable "lineas"
 
     lineas[numeroLinea - 1] = str(linea) + '\n'
 
-    with open(rutaArchivo, 'w') as f:
-        f.writelines(lineas)
+    with open(rutaArchivo, 'w') as f: # 
+        f.writelines(lineas) # Se escriben todas las líneas modificadas en la lista "lineas" de nuevo en el archivo
     return
 
 
 def procesoEliminarUsuario(usuario):
     contador = 0 
 
-    saldo = consultarSaldo(usuario[0])
+    saldo = consultarSaldo(usuario[0]) # Se consulta el saldo del usuario y con la estructura de decisión siguiente se verifica que el saldo no sea cero
     if float(saldo) > 0 :
         print("La cuenta aún tiene saldo disponible, por favor vuelve a jugar o retira el dinero.")
         return "0"
@@ -666,13 +666,13 @@ def procesoEliminarUsuario(usuario):
 
         op = ""
         while len(op) < 6 :
-            op = getpass.getpass("Ingrese el pin del usuario: ")
+            op = getpass.getpass("Ingrese el pin del usuario: ") # Se le solicita el pin a usuario y se verifica que tenga las características necesarias
         if len(op) < 6 :
             print("Por favor, ingrese un pin con 6 caracteres o mas")
             contador += 1 
         else:
             if usuario[1] == op:
-                validaUsuario = 1
+                validaUsuario = 1 # el pin se compara con el que se tiene almacenado para este usuario, si es así se le asigna 1 a la variable "validaUsuario"
             else:
                 validaUsuario = 0
             if validaUsuario == 0:
@@ -685,11 +685,11 @@ def procesoEliminarUsuario(usuario):
         if validaUsuario == 1:
             print(f"Se procedera a eliminar el usuario {usuario[0]}.")
             time.sleep(1.5)
-            for i in range(1, 6):
+            for i in range(1, 6): # este ciclo imprime 5 puntos cada 1.5 segundos, lo cual da la impresión de tiempo de espera 
                 print(".", end=' ')
                 time.sleep(1.5)
             print()
-            eliminaUsuario(usuario)
+            eliminaUsuario(usuario) # EN el caso de que la validación haya sido positiva (validaUsuario == 1) entonces se llama a la función "eliminaUsuario" (que está más adelante)
             return "1"
         else:
             print("No se ha realizado la autenticación correctamente, por favor intente de nuevo!")
