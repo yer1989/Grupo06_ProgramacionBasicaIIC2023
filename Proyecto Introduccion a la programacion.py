@@ -517,7 +517,7 @@ def dividirJugada(cartas, saldo, apuesta):
     return cartasJuego1, cartasJuego2, saldo - apuesta
 
 def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
-    while True:
+    while True: # este ciclo se repite hasta que el jugador pierda o decida salir
         accion = input("¿Deseas pedir una nueva carta 1 o para detener el juego 2? ").upper()
         if accion == '1':
             nuevaCarta = generarCarta()
@@ -527,16 +527,17 @@ def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
             if valorMano(jugadorCartas) > 21:
                 print("Te pasaste de 21. Pierdes.")
                 saldo -= apuesta
-                break
+                break 
+    # con el fragmente de código anterior, si el jugador elige pedir una nueva carta, se genera una nueva carta usando la función "generarCarta", se muestra al jugador, se agrega a la lista "jugadorCartas" y se muestra la mano actual. Si el valor total de la mano del jugador supera 21, el jugador pierde la ronda y se reduce el saldo en la cantidad de la apuesta, luego se rompe el ciclo
         elif accion == '2':
             break
         else:
             print("Opción no válida. Ingresa 1 para pedir una nueva carta o 2 para detener el juego.")
 
-    if valorMano(jugadorCartas) <= 21:
+    if valorMano(jugadorCartas) <= 21: # Al detener el juego, esta función verifica el valor de las manos
         print("Turno del crupier...")
         print(f"La carta oculta del crupier es: {crupierCartas[1]}")
-        while valorMano(crupierCartas) < 17:
+        while valorMano(crupierCartas) < 17: # El crupier pide carta en la medida en que sus cartas suman menos de 17
             nuevaCarta = generarCarta()
             print(f"El crupier recibe: {nuevaCarta}")
             crupierCartas.append(nuevaCarta)
@@ -554,7 +555,7 @@ def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
             print("¡Ganaste!")
         else:
             print("Empate. Se devuelve tu apuesta.")
-
+# COn el fragmento anterior se comparan los valores de las cartas del usuario y del crupier para determinar quién gana
     print(f"Tu saldo actual es: {saldo}")
     return saldo
 
