@@ -562,20 +562,22 @@ def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
 
 def mostrarMaquinaTragamonedas(figuras):
     print("Este es el resultado")
-    time.sleep(1.5)
+    time.sleep(1.5) # Con este método se hace pausa de 1.5 segundos, para dar la sensación de que la máquina está mostrando el resultado poco a poco.
     for figura in figuras:
-        print(figura, end=' ')
+        print(figura, end=' ') # El ciclo "for" recorre cada elemento de la lista figuras. "End=' '" se utiliza para que la impresión de las figuras no salte de línea después de cada una, lo que crea la apariencia de estar impresas una al lado de la otra
         time.sleep(1.5)
     print()
 
 def jugarMaquinaTragamonedas(usuario):
     saldoActual = usuario[3]
     apuestaMinima = float(configAvanzada[3].strip())
-    cantidadJugadas = 1
+    cantidadJugadas = 1 
     acumulado = float(configAvanzada[2].strip())
 
     while True:
-        apuesta = float(input(f"{usuario[2]} cuanto desea apostar? Tu saldo es de: {saldoActual}: "))
+        apuesta = float(input(f"{usuario[2]} cuanto desea apostar? Tu saldo es de: {saldoActual}: ")) #Se solicita al usuario la cantidad que desea apostar
+
+        # la siguiente estructura de decisión determina si el usuario tiene un saldo mínimo que le permita jugar
         if saldoActual < apuestaMinima:
             print("No tienes suficiente dinero para jugar.")
             return
@@ -587,7 +589,7 @@ def jugarMaquinaTragamonedas(usuario):
             print(f"Saldo actual: {saldoActual}")
             input("Presione Enter para jalar la palanca e iniciar el juego.")
 
-            figuras = [random.choice(["@", "#", "+", "7"]) for _ in range(3)]
+            figuras = [random.choice(["@", "#", "+", "7"]) for _ in range(3)] # Símbolos aleatorios que van a servir para la máquina tragamonedas, se almacenan en la lista "figuras"
 
             figuras = ["@", "7", "#", "+"]
             if cantidadJugadas == 5:
@@ -600,10 +602,11 @@ def jugarMaquinaTragamonedas(usuario):
                 resultadoFigura = ["7"] * 3
                 cantidadJugadas = 0
             else:
-                resultadoFigura = [random.choice(figuras) for _ in range(3)]
+                resultadoFigura = [random.choice(figuras) for _ in range(3)] # Si no se cumple ninguna de las opciones anteriores, se generan figuras aleatorias
 
-            mostrarMaquinaTragamonedas(resultadoFigura)
+            mostrarMaquinaTragamonedas(resultadoFigura) # Se llama a la función anterior (más arriba en esta código) que permite mostrar el resultado 
 
+            # la siguiente estructura de decisión evalúa los diferentes resultados y establece el nuevo saldo dado los resultados
             if resultadoFigura.count("@") == 3:
                 saldoActual += apuesta
                 print("¡Recuperaste tu inversión!")
@@ -621,12 +624,14 @@ def jugarMaquinaTragamonedas(usuario):
                 acumulado += apuesta
 
             cantidadJugadas += 1
-            
+
+            #Se actualizan los datos del usuario dados los resultados del juego
             usuario[3] = saldoActual
             actualizarSaldo(usuario)
             modificarConfigAvanzada(str(acumulado),3)
             cargaConfigAvanzada()
 
+        # Se muestra el nuevo saldo al usuario
         print(f"{usuario[2]} tu saldo actual es de: {saldoActual}")
         jugarNuevamente = input("¿Deseas jugar nuevamente? (1 Sí o 2 No): ")
         if jugarNuevamente != '1':
