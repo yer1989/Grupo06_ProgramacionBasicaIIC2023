@@ -411,7 +411,7 @@ def depositarDinero(usuario):
         return
 
     usuario[3] = round(float(usuario[3]) + float(monto),2)
-    actualizarSaldo(usuario) # Se actualiza el saldo del usuario sumando el monto ingresado al saldo actual del usuario
+    actualizarSaldo(usuario) # Se llama a la función que sigue (actualizarSaldo), la cual actualiza el saldo del usuario sumando el monto ingresado al saldo actual del usuario
     print(f"Su deposito de dinero ha sido exitoso, {usuario[2]} su saldo actual es de: {str(usuario[3])}.")
 
 def actualizarSaldo(usuario):
@@ -426,23 +426,24 @@ def actualizarSaldo(usuario):
 
 def juegoBlackJack(usuario):
 
-    saldo = float(usuario[3])
-    apuestaMinima = float(configAvanzada[4].strip())
+    saldo = float(usuario[3]) # Se extrae el saldo del usuario del cuarto elemento de la lista "usuario" y se almacena en la variable saldo.
+    apuestaMinima = float(configAvanzada[4].strip()) # Se extrae la apuesta mínima requerida y se guarda en "apuestaMinima"
 
-    while saldo >= apuestaMinima and True:
+    while saldo >= apuestaMinima and True: # Se inicia un ciclo while que se ejecutará mientras el saldo del jugador sea mayor o igual a la apuesta mínima
         apuesta = float(input(f"{usuario[2]} tu saldo es {saldo}. ¿Cuánto deseas apostar? (mínimo {apuestaMinima}): "))
         if apuesta < apuestaMinima:
             print("Apuesta insuficiente. Debes apostar al menos el mínimo.")
             continue
 
-        # Reparto inicial de cartas
+        # Reparto inicial de cartas, se llama la siguiente función de este código, la cual genera las cartas de forma aleatoria, tanto para el usuario como para el crupier
         jugadorCartas = [generarCarta(), generarCarta()]
         crupierCartas = [generarCarta(), generarCarta()]
 
-        mostrarCartasJugador(jugadorCartas)
+        mostrarCartasJugador(jugadorCartas) # Se llama a la función "mostrarCartasJugador" que está más adelante en este código y que muestra las cartas
 
         print(f"La primera carta del crupier es: {crupierCartas[0]}")
-        
+
+        # La siguiente función anidada llama a la función "puedeDividir" que está más adelante en el código. Si la función devuelve True, significa que el jugador tiene dos cartas del mismo valor y puede optar por dividir su mano. El programa pregunta al jugador si desea doblar su apuesta o dividir la jugada. Si no es posible dividir, solo se pregunta si desea doblar.
         if puedeDividir(jugadorCartas):
             opcion = input("¿Deseas doblar tu apuesta 1 o dividir la jugada 2? ").upper()
         else:
