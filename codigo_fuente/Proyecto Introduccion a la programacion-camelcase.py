@@ -265,6 +265,13 @@ def dreamWorldCasino():
                     opcJuego = input("Seleccione una opción: ")
                     if opcJuego == "1":
                         print("Reglas juegoBlackJack")
+                        print("PASO 1, Únete a una mesa, y haz tu apuesta. Una vezrecibe dos cartas boca arriba. El crupier también se reparte dos cartas, una descubierta y la otra boca abajo.")
+                        print("PASO 2 Decide si pides o te plantas,tras analizar el valor de tu mano y todas las cartas que se han repartido, el siguiente paso es conseguir la mejor opción de estar lo más cerca posible del 21 sin pasarte.")
+                        print("Pide carta=Pide otra carta al crupier. Hazlo cuando, según el valor actual de tus cartas, o bien estás seguro de que la próxima carta no hará que te pases, o estás dispuesto a correr el riesgo de que el crupier consiga una mano mejor.")
+                        print("Plántate=Pide al crupier que pase al siguiente jugador y que no te reparta más cartas. Probablemente hagas esto cuando el valor de tus cartas ya es bastante alto (por ejemplo, más de 17) y no puedas estar seguro de que la mano del crupier vaya a superar a la tuya.")
+                        print("PASO 3 El valor de tu mano, Como resultado del movimiento que acabas de hacer, tu mano probablemente tenga un nuevo valor. Sigues en el juego si tu mano vale 21 o menos.")
+                        print("PASO 4 El crupier enseña sus cartas,cuando todos los jugadores de la mesa han tomado su decisión, el crupier muestra la carta que tenía boca abajo.")
+                        print("PASO 5 Comprueba quién está más cerca de 21, Si tu mano está más cerca de 21 que la del crupier, superas al repartidor y ganas. Si el crupier tiene 21 o una puntuación más cercana a 21 que el resto de los jugadores, el crupier gana. El crupier te entregará tus ganancias si has tenido suerte. La cantidad del pago dependerá del tipo de apuesta que hayas hecho.")
                         juegoBlackJack(usrList)
                     elif opcJuego == "2":
                         print("Reglas MaquinaTragamonedas")
@@ -877,3 +884,4 @@ while opcion != "4":
         print("Gracias por participar")
     else:
         print("Por favor, seleccione una opción válida.")
+
