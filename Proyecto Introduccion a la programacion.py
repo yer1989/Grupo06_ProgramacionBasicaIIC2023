@@ -797,11 +797,12 @@ def menuConfigAvanzada():
         else:
             print("Por favor, seleccione una opción válida.")
 
+# La siguiente función nos permite modificar los valores de la configuración avanzada
 def modificarValConfig():
     opcion = ""
 
-    while opcion != "4":
-        cargaConfigAvanzada()
+    while opcion != "4": # El ciclo while que se ejecuta hasta que decida salir
+        cargaConfigAvanzada() 
         print("¿Qué desea modificar?")
         print("1. Tipo de cambio: Compra de dólares usando colones")
         print("2. Tipo de cambio: Compra de dólares usando bitcoins")
@@ -813,7 +814,8 @@ def modificarValConfig():
 
         opcion = input("Seleccione una opción: ")
 
-        if opcion == "1":
+        # Esta estructura de decisión permite modificar los valores de tipo de cambio y puestas mínimas dependiendo de a opción que escoja el usuario
+        if opcion == "1": 
             print(f"Valor actual del tipo de cambio Compra de dólares usando colones: {configAvanzada[0]}")
             tipoCambio = float(input("Ingresa el nuevo tipo de cambio:"))
             if tipoCambio<=0:
@@ -912,3 +914,7 @@ while opcion != "4":
         print("Gracias por participar")
     else:
         print("Por favor, seleccione una opción válida.")
+
+
+
+
