@@ -320,28 +320,31 @@ def consultarSaldo(usuario):
         return saldo.strip() 
     else:
         return "error"
-
+        
+# La siguiente función e encarga de leer y procesar información del archivo "usuarios_pines.txt" que contiene lo pines de usuarios
 def consultarUsuarios():
-    nombreArchivo = "usuarios_pines.txt"
+    nombreArchivo = "usuarios_pines.txt" 
 
     carpetaActual = os.path.abspath(os.path.dirname(__file__))
 
     rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
+    
+# La función utiliza "try" para abrir y leer el archivo "usuarios_pines.txt". Si el archivo no se encuentra, se da la excepción "FileNotFoundError", y si hay un error al leer el archivo, la excepción "IOError"
     try:
-        with open(rutaArchivo, 'r') as archivo:
+        with open(rutaArchivo, 'r') as archivo: # El archivo se abre en modo lectura
             usuarios = archivo.readlines()
 
         global pinConfigAvanzada 
         pinConfigAvanzada = str(usuarios[0].strip())
 
-        del usuarios[0]
+        del usuarios[0] # Se extrae esta línea y se almacena en la variable global pinConfigAvanzada. Luego, se elimina esta línea de la lista de usuarios
 
         listaUsuario = []
         for linea in range(0, len(usuarios), 3):
             usuario = usuarios[linea].strip()
             contrasena = usuarios[linea + 1].strip()
             nombreUsuario = usuarios[linea + 2].strip()
-            listaUsuario.append([usuario, contrasena, nombreUsuario])
+            listaUsuario.append([usuario, contrasena, nombreUsuario]) # Se extraen los valores de nombre de usuario, contraseña y nombre del usuario de las líneas y se almacenan en una lista listaUsuario
 
         return listaUsuario
     except FileNotFoundError:
