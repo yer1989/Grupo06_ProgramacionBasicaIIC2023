@@ -374,18 +374,22 @@ def retirarDinero(usuario):
             bandera = False # si el contador alcanzó el valor de 3, se imprime un mensaje indicando que se excedieron la cantidad máxima de intentos y se vuelve al menú
     return 0
 
+# Esta función permite al usuario depositar dinero
 def depositarDinero(usuario):
 
     divisa = ""
     monto = 0
+    # Estas variables se usarán para almacenar la opción de divisa seleccionada por el usuario y el monto que desea depositar
 
     print("Realice su deposito")
     print("1. Dolares")
     print("2. Colones")
     print("3. Bitcoin")
-
+    # Se solicita la información a usuario
+    
     divisa = int(input("Seleccione una divisa: "))
-
+    
+# Con cada una de las divisas (dependiendo de cuál escoge el usuario) se le solicita que haga el depósito
     if divisa == 1:
         print("1.Dolares")
         op = float(input("Ingrese un monto a depositar en su cuenta: "))
@@ -401,12 +405,13 @@ def depositarDinero(usuario):
         op = float(input("Ingrese un monto a depositar en su cuenta: "))
         monto = op * int(configAvanzada[1].strip())
 
+    
     else: 
         print("Por favor, seleccione una opcion valida.")
         return
 
     usuario[3] = round(float(usuario[3]) + float(monto),2)
-    actualizarSaldo(usuario)
+    actualizarSaldo(usuario) # Se actualiza el saldo del usuario sumando el monto ingresado al saldo actual del usuario
     print(f"Su deposito de dinero ha sido exitoso, {usuario[2]} su saldo actual es de: {str(usuario[3])}.")
 
 def actualizarSaldo(usuario):
