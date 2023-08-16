@@ -749,10 +749,10 @@ def menuConfigAvanzada():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            listaUsuario = consultarUsuarios()
+            listaUsuario = consultarUsuarios() #Se llama a la función "consultarUsuarios" para obtener la lista de usuarios
             validaUsuario = 0
             contador = 0 
-            usrList = []
+            usrList = [] # Lista vacía para almacenar la información del usuario
 
             if len(listaUsuario)>0:
                 op = ""
@@ -762,7 +762,7 @@ def menuConfigAvanzada():
                         print("Por favor, ingrese un usuario con 5 caracteres o mas")
                         contador += 1 
                     else:
-                        for fila in listaUsuario:
+                        for fila in listaUsuario: #si el usuario existe en la lista de usuarios, se almacenan los detalles del usuario en "usrList" y "validaUsuario" se establece en 1.
                             if fila[0] == op:
                                 usrList.append(fila[0])
                                 usrList.append(fila[1])
@@ -778,19 +778,19 @@ def menuConfigAvanzada():
                     else:
                         print("No hay usuarios registrados en el sistema")
 
-                if validaUsuario == 1:
+                if validaUsuario == 1: # Creo que esta función está repetida (REVISAR)
                     print(f"Se procedera a eliminar el usuario {usrList[0]}.")
                     time.sleep(1.5)
                     for i in range(1, 6):
                         print(".", end=' ')
                         time.sleep(1.5)
                     print()
-                    eliminaUsuario(usrList)
+                    eliminaUsuario(usrList) # Se llama a la función "eliminarUsuario", que elimina el usuario
             else:
                 print("No hay usuarios registrados en el sistema.")
 
         elif opcion == "2":
-            modificarValConfig()
+            modificarValConfig() # Se llama a la función "modificarValConfig" que está adelante en este código
         elif opcion == "3":
             print("")
             break
