@@ -352,26 +352,26 @@ def consultarUsuarios():
     except IOError:
         print(f"Error al leer el archivo: {nombreArchivo}")
 
-
+# Esta función, que recibe como argumento el diccionario "usuario", permite el retiro de dinero (o lo simula)
 def retirarDinero(usuario):
-    op = ""
+    op = "" # En esta cadena se guardará la cantidad de dinero que el usuario quiere retirar 
     contador = 0
-    bandera = True
+    bandera = True # Esta variable va controlar la ejecución del ciclo while que hay a continuación
     print(f"{usuario[2]} tu saldo actual es de: {str(usuario[3])}.")
     while bandera :
         op = input("¿Cuanto desea retirar?: ")
         if float(op) == 0 or float(op) > float(usuario[3]) or float(op) < 0:
             print("Por favor, ingrese un monto correcto.")
-            contador += 1 
+            contador += 1 # Si la cantidad ingresada es igual a 0, mayor que el saldo disponible o menor que 0, se imprime un mensaje de error y se incrementa el contador en 1
         else:
             usuario[3] = float(usuario[3]) - float(op)
             actualizarSaldo(usuario)
             print(f"Su retiro de dinero ha sido exitoso, su saldo actual es de: {str(usuario[3])}.")
-            bandera = False
+            bandera = False # Si la cantidad ingresada es válida se actualiza el saldo del usuario restando la cantidad ingresada
 
         if contador == 3 :
             print("Se excedió el máximo de intentos para realizar su retiro de dinero, volviendo al menú principal.")
-            bandera = False
+            bandera = False # si el contador alcanzó el valor de 3, se imprime un mensaje indicando que se excedieron la cantidad máxima de intentos y se vuelve al menú
     return 0
 
 def depositarDinero(usuario):
