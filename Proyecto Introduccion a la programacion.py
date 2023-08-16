@@ -699,9 +699,9 @@ def eliminaUsuario(usuario):
 
     directorio_a_eliminar = os.path.abspath(os.path.join(os.getcwd(), "..", usuario[0]))
 
-    if os.path.exists(directorio_a_eliminar) and os.path.isdir(directorio_a_eliminar):
+    if os.path.exists(directorio_a_eliminar) and os.path.isdir(directorio_a_eliminar): # Se verifica si la carpeta con la información del usuario existe
         try:
-            shutil.rmtree(directorio_a_eliminar)
+            shutil.rmtree(directorio_a_eliminar) # "shutil.rmtree" es un método que permite eliminar la carpeta y todos sus contenidos
 
             nombreArchivo = "usuarios_pines.txt"
 
@@ -709,14 +709,14 @@ def eliminaUsuario(usuario):
 
             rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
 
-            lstUsuarios = consultarUsuarios()
+            lstUsuarios = consultarUsuarios() # Con las líneas anteriores se busca actualizar el archivo de usuarios
 
 
-            usuariosNuevo = []
+            usuariosNuevo = [] # Aquí se van a almacenar los datos de los usuarios que no se van a eliminar
 
             for usuarioBusqueda in lstUsuarios:
                 if usuarioBusqueda[0] != usuario[0]:
-                    usuariosNuevo.append(usuarioBusqueda)
+                    usuariosNuevo.append(usuarioBusqueda) # Se agregan los usuarios que no se van a eliminar a la lista
 
             rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
             with open(rutaArchivo, "w") as archivo:
@@ -728,7 +728,7 @@ def eliminaUsuario(usuario):
             with open(rutaArchivo, "a") as archivo:
                 for escribirLinea in usuariosNuevo:
                         linea = "\n".join(escribirLinea)
-                        archivo.write(str(linea))
+                        archivo.write(str(linea)) # Se agregan los usuarios que no se eliminan al archivo
 
             print(f"Usuario {usuario[0]} eliminado correctamente.")
 
