@@ -1,6 +1,7 @@
 #Proyecto Introduccion a la programacion 
 #Autor Grupo 6 
 
+#Se importan las librerías que permiten crear un password; crear y leer archivos (entre otras operaciones con archivos); crear números aleatorios y funciones relacionadas con el tiempo (que permitirán incluir intervalos de tiempo de respuesta)
 import getpass 
 import os
 import random
@@ -13,6 +14,8 @@ listaUsuario = []
 listaContrasena = []
 listaNombre = []
 listaDivisa = []
+
+#Esto es a lo que se le llama un "diccionario" y nos permite almacenar información y usar las definiciones como argumentos de otras funciones
 usuario = {
     "usuario": "",
     "contrasena": "",
@@ -23,24 +26,27 @@ configAvanzada = []
 pinConfigAvanzada = ""
 
 def cargaConfigAvanzada():
+#Definimos el archivo en el que vamos a almacenar la información, que en este caso es llamado "configuración_avanzada.txt"
     nombreArchivo = "configuracion_avanzada.txt"
 
     carpetaPadre = os.path.abspath(os.path.dirname(__file__))
 
     rutaArchivo = os.path.join(carpetaPadre, "..", nombreArchivo)
-    global configAvanzada
+#estos dos últimos métodos permiten establecer la ruta de la carpeta en la que se encuentra el archivo actual de ejecución del script y la ruta absoluta de la carpeta.
+    global configAvanzada # la variable configAvanzada se utilizará para almacenar las líneas leídas desde el archivo
     try:
         with open(rutaArchivo, 'r') as archivo:
-            configAvanzada = archivo.readlines()
+            configAvanzada = archivo.readlines() # este método permite leer todas las líneas del archivo y almacenarlas en la variable
         
     except FileNotFoundError:
         print(f"No se pudo encontrar el archivo: {nombreArchivo}")
     except IOError:
         print(f"Error al leer el archivo: {nombreArchivo}")
 
+#La siguiente función crea un nuevo usuario usando el diccionario definido antes, que tiene la información del usuario
 def crearUsuario(usuario) : 
     try:
-        nombreCarpeta = str(usuario["usuario"])
+        nombreCarpeta = str(usuario["usuario"]) #Se convierte la información en un string
 
         carpetaPadre = os.path.join(os.getcwd(), os.pardir, nombreCarpeta)
 
@@ -48,13 +54,15 @@ def crearUsuario(usuario) :
             os.makedirs(carpetaPadre)
         else:
             return 0
-
+# Lo anterior construye la ruta de la carpeta padre utilizando el nombre del usuario, se verifica si la carpeta ya existe. Si no existe, se crea. Si la carpeta ya existe, la función devuelve 0 (el usuario ya existe)
+       
         nombreArchivo = "saldos.txt"
 
         rutaArchivo = os.path.join(carpetaPadre, nombreArchivo)
 
         with open(rutaArchivo, "w") as archivo:
             archivo.write(str(round(float(usuario["dinerocuenta"]),2)))
+# Se construye la ruta del archivo "saldos.txt". Luego, se escribe el saldo de la cuenta del usuario
 
         nombreArchivo = "usuarios_pines.txt"
 
@@ -63,14 +71,16 @@ def crearUsuario(usuario) :
         rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
         with open(rutaArchivo, "a") as archivo:
             archivo.write("\n" + str(usuario["usuario"]) + "\n" + str(usuario["contrasena"] + "\n" +str(usuario["nombreusuario"])))
+# Se construye la ruta del archivo "usuarios_pines.txt". Luego, se abre el archivo y se escribe la información del usuario
 
-        return 1
+        return 1  # 1 para registro exitoso
     except Exception as e:
         return 0
 
+# La siguiente función permite al usuario registrarse en el sistema
 def registroUsuario() :
-    op = ""
-    contador = 0
+    op = "" # Almacena las opciones ingresadas por el usuario
+    contador = 0 # Permite contar los intentos fallidos, y con la siguiente estructura cíclica se solicita la información al usuario (nombre de usuario). Si el usuario falla cinco veces habrá alcanzado el límite de intentos
     while len(op) < 5 :
         op = input("Ingrese su usuario: ")
         if len(op) < 5 :
@@ -90,7 +100,7 @@ def registroUsuario() :
             print("Ha alcanzado el limite de intentos")
             return
 
-    op = ""
+    op = "" # Se usa la misma estructura que en el caso anterior, pero en este caso la estructura cíclica se repite hasta que el usuario ingrese una contraseña de más de 6 caracteres. Luego pide la confirmación de la contraseña
     
     while len(op) < 6 :
         op= getpass.getpass("Ingrese su contraseña: ")
@@ -106,7 +116,7 @@ def registroUsuario() :
                     usuario["contrasena"] = passw
                 else:
                     print("Contraseña no coincide con la anterior ingresada, por favor intente nuevamente")
-
+#ciclo que se repite hasta que el usuario ingrese un nombre
     op = ""
     
     while len(op.strip()) == 0 :
@@ -116,12 +126,13 @@ def registroUsuario() :
         else:
             usuario["nombreusuario"] = op
 
-    monto = 0 
+    monto = 0  # Se crea la variable "monto" y con el siguiente ciclo se solicita al usuario que ingrese un monto
     op = ""
-    contador = 0
+    contador = 0 #Este contador mide el número de intentos
     while monto < int(configAvanzada[5].strip()):
             divisa = ""
 
+#Se le solicita al usuario que escoja el tipo de divisa, y dependiendo de la divisa se establece el monto mínimo
             print(f"Realice su deposito, el deposito debe ser mayor o igual a {configAvanzada[5].strip()}")
             print("1. Dolares")
             print("2. Colones")
@@ -156,18 +167,18 @@ def registroUsuario() :
             if contador == 3:
                 print("Limite alcanzado en el deposito, por favor vuelva a iniciar.")
                 return
-    usuario["dinerocuenta"] = monto
+    usuario["dinerocuenta"] = monto #El monto se guarda en el diccionario creado para el usuario ("usuario"), bajo "dinerocuenta"
 
-    if crearUsuario(usuario) == 1 :
+    if crearUsuario(usuario) == 1 : #En el caso de que el registro haya sido exitoso (en la función anterior), y el monto guardado, se imprime el siguiente mensaje
         print(f"Transaccion realizada satisfactoriamente, su saldo es de: ${str(monto)}.")
     else :
         print("Error al guardar el usuario.")
 
 def dreamWorldCasino():
-    listaUsuario = consultarUsuarios()
+    listaUsuario = consultarUsuarios() # Tomamos la información de usuario llamando a la función "consultarUsuarios" que sigue a esta función
     validaUsuario = 0
     contador = 0 
-    usrList = []
+    usrList = [] # Guarda la información de usuario válido en una lista
 
     if len(listaUsuario)>0:
         op = ""
@@ -176,15 +187,16 @@ def dreamWorldCasino():
         if len(op) < 5 :
             print("Por favor, ingrese un usuario con 5 caracteres o mas")
             contador += 1 
+# Si el nombre de usuario no cumple con el requisito de 5 caracteres mínimo, se repite el ciclo y se solicita la información de nuevo y se incrementa el contador de intentos
         else:
             for fila in listaUsuario:
                 if fila[0] == op:
                     usrList.append(fila[0])
                     usrList.append(fila[1])
                     usrList.append(fila[2])
-                    validaUsuario = 1
+                    validaUsuario = 1 # Si el usuario existe, se asigna 1 a "validaUsuario"
                     break
-                
+   # Si el nombre de usuario cumple con el mínimo, se agrega a la lista temporal              
             if validaUsuario == 0:
                 contador += 1 
                 print("Usuario no existe por favor reintente nuevamente")
@@ -195,7 +207,7 @@ def dreamWorldCasino():
         print("No hay usuarios registrados en el sistema")
 
     contador = 0 
-    if validaUsuario == 1:
+    if validaUsuario == 1: #Dado que el nombre de usuario es correcto el usuario debe ingresar su pin, que debe tener 6 caracteres mínimo. Si no cumple con este requisito, se muestra un mensaje y se incrementa el contador de intentos.
         op = ""
         while len(op) < 6 :
             op = getpass.getpass("Ingrese el pin del usuario: ")
