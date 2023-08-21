@@ -744,10 +744,10 @@ def menuConfigAvanzada():
         opcion = input("Seleccione una opción: ")
 
         if opcion == "1":
-            listaUsuario = consultarUsuarios()
+            listaUsuario = consultarUsuarios() #Se llama a la función "consultarUsuarios" para obtener la lista de usuarios
             validaUsuario = 0
             contador = 0 
-            usrList = []
+            usrList = [] # Lista vacía para almacenar la información del usuario
 
             if len(listaUsuario)>0:
                 op = ""
@@ -757,7 +757,7 @@ def menuConfigAvanzada():
                         print("Por favor, ingrese un usuario con 5 caracteres o mas")
                         contador += 1 
                     else:
-                        for fila in listaUsuario:
+                        for fila in listaUsuario: #si el usuario existe en la lista de usuarios, se almacenan los detalles del usuario en "usrList" y "validaUsuario" se establece en 1
                             if fila[0] == op:
                                 usrList.append(fila[0])
                                 usrList.append(fila[1])
@@ -780,22 +780,23 @@ def menuConfigAvanzada():
                         print(".", end=' ')
                         time.sleep(1.5)
                     print()
-                    eliminaUsuario(usrList)
+                    eliminaUsuario(usrList) # Se llama a la función "eliminarUsuario", que elimina el usuario
             else:
                 print("No hay usuarios registrados en el sistema.")
 
         elif opcion == "2":
-            modificarValConfig()
+            modificarValConfig() # Se llama a la función "modificarValConfig" que está adelante en este código
         elif opcion == "3":
             print("")
             break
         else:
             print("Por favor, seleccione una opción válida.")
 
+# La siguiente función nos permite modificar los valores de la configuración avanzada
 def modificarValConfig():
     opcion = ""
 
-    while opcion != "4":
+    while opcion != "4": # El ciclo while que se ejecuta hasta que decida salir
         cargaConfigAvanzada()
         print("¿Qué desea modificar?")
         print("1. Tipo de cambio: Compra de dólares usando colones")
@@ -808,6 +809,7 @@ def modificarValConfig():
 
         opcion = input("Seleccione una opción: ")
 
+        # Esta estructura de decisión permite modificar los valores de tipo de cambio y puestas mínimas dependiendo de a opción que escoja el usuario
         if opcion == "1":
             print(f"Valor actual del tipo de cambio Compra de dólares usando colones: {configAvanzada[0]}")
             tipoCambio = float(input("Ingresa el nuevo tipo de cambio:"))
