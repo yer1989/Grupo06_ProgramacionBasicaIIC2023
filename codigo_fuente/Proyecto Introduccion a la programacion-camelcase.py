@@ -215,7 +215,7 @@ def dreamWorldCasino():
             print("Por favor, ingrese un pin con 6 caracteres o mas")
             contador += 1 
         else:
-            if usrList[1] == op:
+            if usrList[1] == op: # Si el pin coincide con el almacenado en la lista entonces el valor se mantiene en 1
                 validaUsuario = 1
             else:
                 validaUsuario = 0
@@ -226,20 +226,20 @@ def dreamWorldCasino():
             print("Se excedió el máximo de intentos para ingresar su PIN, volviendo al menú principal")
             return
     
-    if validaUsuario == 1:
+    if validaUsuario == 1: # Si "validaUsuario" es igual a 1, entonces el usuario entre a DreamWorld Casino, y se despliega el menú
         print("Bienvenido " + usrList[0] + " a DreamWorld Casino!")
-        opcion = ""
+        opcion = "" # En esta variable se guarda la opción que se escoge en el menu. El usuario seguirá en el menú (por medio de la ciclo while, que sigue hasta que el usuario desee salir)
 
         while opcion != "6":
 
-            saldo = consultarSaldo(usrList[0])
+            saldo = consultarSaldo(usrList[0]) # Recuperamos el saldo del usuario asociado a su nombre
             if saldo == "error":
                 print("Se ha presentado un error obteniendo el saldo.")
                 break
-            elif len(usrList) == 3 :
+            elif len(usrList) == 3 : # Si longitud de ursList es igual a 3, entonces no hay un saldo para ese usuario aún
                 usrList.append(float(saldo))
             else:
-                usrList[3] = float(saldo)
+                usrList[3] = float(saldo) # Se extrae el saldo (cuarta posición en la lista)
 
             print("1. Retirar dinero")
             print("2. Depositar dinero")
@@ -249,7 +249,7 @@ def dreamWorldCasino():
             print("6. Salir")
 
             opcion = input("Seleccione una opción: ")
-
+# Dependiendo de la opción escogida por el usuario, se llama a las funciones correspondientes
             if opcion == "1":
                 retirarDinero(usrList)
             elif opcion == "2":
@@ -269,14 +269,14 @@ def dreamWorldCasino():
                     if float(usrList[3])==0:
                         print("Usuario no tiene saldo disponible, por favor realizar un deposito.")
                         break
-                    
+# Si el usuario escoge lo juegos en línea, entonces se le presenta las tres opciones que ofrece DreamWorld Casino                    
                     print("1. Blackjack")
                     print("2. Tragamonedas")
                     print("3. Salir")
 
                     opcJuego = input("Seleccione una opción: ")
                     if opcJuego == "1":
-                        print("Reglas juegoBlackJack")
+                        print("Reglas juegoBlackJack") # Se imprimen las reglas del BlackJack
                         print("PASO 1, Únete a una mesa, y haz tu apuesta. Una vezrecibe dos cartas boca arriba. El crupier también se reparte dos cartas, una descubierta y la otra boca abajo.")
                         print("PASO 2 Decide si pides o te plantas,tras analizar el valor de tu mano y todas las cartas que se han repartido, el siguiente paso es conseguir la mejor opción de estar lo más cerca posible del 21 sin pasarte.")
                         print("Pide carta=Pide otra carta al crupier. Hazlo cuando, según el valor actual de tus cartas, o bien estás seguro de que la próxima carta no hará que te pases, o estás dispuesto a correr el riesgo de que el crupier consiga una mano mejor.")
@@ -304,11 +304,11 @@ def dreamWorldCasino():
                 print("Por favor, seleccione una opción válida.")
 
 def consultarSaldo(usuario):
-    nombreArchivo = os.path.join(os.pardir, usuario, "saldos.txt")
+    nombreArchivo = os.path.join(os.pardir, usuario, "saldos.txt") # Ruta al archivo "saldos.txt" dentro de un directorio que lleva el nombre del usuario (cada usuario tendrá su propia carpeta)
 
     def obtenerUltimoRegistro(archivo):
-        with open(archivo, "r") as archivo_txt:
-            lineas = archivo_txt.readlines()
+        with open(archivo, "r") as archivo_txt: # Abre el archivo en modo lectura
+            lineas = archivo_txt.readlines() # Almacena todas las líneas del archivo en la variable "lineas"
             if lineas:
                 return lineas[-1]
             else:
@@ -321,27 +321,29 @@ def consultarSaldo(usuario):
     else:
         return "error"
 
+# La siguiente función e encarga de leer y procesar información del archivo "usuarios_pines.txt" que contiene lo pines de usuarios
 def consultarUsuarios():
     nombreArchivo = "usuarios_pines.txt"
 
     carpetaActual = os.path.abspath(os.path.dirname(__file__))
 
     rutaArchivo = os.path.join(carpetaActual, "..", nombreArchivo)
+# La función utiliza "try" para abrir y leer el archivo "usuarios_pines.txt". Si el archivo no se encuentra, se da la excepción "FileNotFoundError", y si hay un error al leer el archivo, la excepción "IOError"
     try:
-        with open(rutaArchivo, 'r') as archivo:
+        with open(rutaArchivo, 'r') as archivo: # El archivo se abre en modo lectura
             usuarios = archivo.readlines()
 
         global pinConfigAvanzada 
         pinConfigAvanzada = str(usuarios[0].strip())
 
-        del usuarios[0]
+        del usuarios[0] # Se extrae esta línea y se almacena en la variable global pinConfigAvanzada. Luego, se elimina esta línea de la lista de usuarios
 
         listaUsuario = []
         for linea in range(0, len(usuarios), 3):
             usuario = usuarios[linea].strip()
             contrasena = usuarios[linea + 1].strip()
             nombreUsuario = usuarios[linea + 2].strip()
-            listaUsuario.append([usuario, contrasena, nombreUsuario])
+            listaUsuario.append([usuario, contrasena, nombreUsuario]) # Se extraen los valores de nombre de usuario, contraseña y nombre del usuario de las líneas y se almacenan en una lista listaUsuario
 
         return listaUsuario
     except FileNotFoundError:
@@ -349,17 +351,17 @@ def consultarUsuarios():
     except IOError:
         print(f"Error al leer el archivo: {nombreArchivo}")
 
-
+# Esta función, que recibe como argumento el diccionario "usuario", permite el retiro de dinero (o lo simula)
 def retirarDinero(usuario):
-    op = ""
+    op = "" # En esta cadena se guardará la cantidad de dinero que el usuario quiere retirar
     contador = 0
-    bandera = True
+    bandera = True # Esta variable va controlar la ejecución del ciclo while que hay a continuación
     print(f"{usuario[2]} tu saldo actual es de: {str(usuario[3])}.")
     while bandera :
         op = input("¿Cuanto desea retirar?: ")
         if float(op) == 0 or float(op) > float(usuario[3]) or float(op) < 0:
             print("Por favor, ingrese un monto correcto.")
-            contador += 1 
+            contador += 1 # Si la cantidad ingresada es igual a 0, mayor que el saldo disponible o menor que 0, se imprime un mensaje de error y se incrementa el contador en 1
         else:
             usuario[3] = float(usuario[3]) - float(op)
             actualizarSaldo(usuario)
