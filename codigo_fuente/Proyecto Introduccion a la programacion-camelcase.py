@@ -366,25 +366,29 @@ def retirarDinero(usuario):
             usuario[3] = float(usuario[3]) - float(op)
             actualizarSaldo(usuario)
             print(f"Su retiro de dinero ha sido exitoso, su saldo actual es de: {str(usuario[3])}.")
-            bandera = False
+            bandera = False # Si la cantidad ingresada es válida se actualiza el saldo del usuario restando la cantidad ingresada
 
         if contador == 3 :
             print("Se excedió el máximo de intentos para realizar su retiro de dinero, volviendo al menú principal.")
-            bandera = False
+            bandera = False # si el contador alcanzó el valor de 3, se imprime un mensaje indicando que se excedieron la cantidad máxima de intentos y se vuelve al menú
     return 0
 
+# Esta función permite al usuario depositar dinero
 def depositarDinero(usuario):
 
     divisa = ""
     monto = 0
-
+# Estas variables se usarán para almacenar la opción de divisa seleccionada por el usuario y el monto que desea depositar
+    
     print("Realice su deposito")
     print("1. Dolares")
     print("2. Colones")
     print("3. Bitcoin")
-
+# Se solicita la información a usuario
+    
     divisa = int(input("Seleccione una divisa: "))
 
+    # Con cada una de las divisas (dependiendo de cuál escoge el usuario) se le solicita que haga el depósito
     if divisa == 1:
         print("1.Dolares")
         op = float(input("Ingrese un monto a depositar en su cuenta: "))
@@ -405,7 +409,7 @@ def depositarDinero(usuario):
         return
 
     usuario[3] = round(float(usuario[3]) + float(monto),2)
-    actualizarSaldo(usuario)
+    actualizarSaldo(usuario) # Se llama a la función que sigue (actualizarSaldo), la cual actualiza el saldo del usuario sumando el monto ingresado al saldo actual del usuario
     print(f"Su deposito de dinero ha sido exitoso, {usuario[2]} su saldo actual es de: {str(usuario[3])}.")
 
 def actualizarSaldo(usuario):
@@ -420,42 +424,43 @@ def actualizarSaldo(usuario):
 
 def juegoBlackJack(usuario):
 
-    saldo = float(usuario[3])
-    apuestaMinima = float(configAvanzada[4].strip())
+    saldo = float(usuario[3]) # Se extrae el saldo del usuario del cuarto elemento de la lista "usuario" y se almacena en la variable saldo.
+    apuestaMinima = float(configAvanzada[4].strip()) # Se extrae la apuesta mínima requerida y se guarda en "apuestaMinima"
 
-    while saldo >= apuestaMinima and True:
+    while saldo >= apuestaMinima and True: # Se inicia un ciclo while que se ejecutará mientras el saldo del jugador sea mayor o igual a la apuesta mínima
         apuesta = float(input(f"{usuario[2]} tu saldo es {saldo}. ¿Cuánto deseas apostar? (mínimo {apuestaMinima}): "))
         if apuesta < apuestaMinima:
             print("Apuesta insuficiente. Debes apostar al menos el mínimo.")
             continue
 
-        # Reparto inicial de cartas
+        # Reparto inicial de cartas, se llama la siguiente función de este código, la cual genera las cartas de forma aleatoria, tanto para el usuario como para el crupier
         jugadorCartas = [generarCarta(), generarCarta()]
         crupierCartas = [generarCarta(), generarCarta()]
 
-        mostrarCartasJugador(jugadorCartas)
+        mostrarCartasJugador(jugadorCartas) # Se llama a la función "mostrarCartasJugador" que está más adelante en este código y que muestra las cartas
 
         print(f"La primera carta del crupier es: {crupierCartas[0]}")
-        
+
+        # La siguiente función anidada llama a la función "puedeDividir" que está más adelante en el código. Si la función devuelve True, significa que el jugador tiene dos cartas del mismo valor y puede optar por dividir su mano. El programa pregunta al jugador si desea doblar su apuesta o dividir la jugada. Si no es posible dividir, solo se pregunta si desea doblar
         if puedeDividir(jugadorCartas):
             opcion = input("¿Deseas doblar tu apuesta 1 o dividir la jugada 2? ").upper()
         else:
             opcion = input("¿Deseas doblar tu apuesta 1? ").upper()
 
         if opcion == '1':
-            if saldo >= apuesta * 2:
+            if saldo >= apuesta * 2: # Si el usuario elige doblar su apuesta (opción 1), el programa verifica si el saldo es suficiente para realizar la apuesta duplicada. Si es posible, la apuesta se duplica y se actualiza la variable apuesta
                 apuesta *= 2
                 print(f"Apostaste el doble: {apuesta}")
             else:
                 print("Saldo insuficiente para doblar la apuesta.")
 
-        if puedeDividir(jugadorCartas):
+        if puedeDividir(jugadorCartas): # Si el ususrio escoge la opción de dividir, se llama a la función dividirJugada (más adelante) para dividir su mano en dos manos separadas
             jugadorCartas, cartasJuego2, saldo = dividirJugada(jugadorCartas, saldo, apuesta)
-            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo)
-            mostrarCartasJugador(cartasJuego2)
+            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo) # Se llama a la función jugarRonda para jugar una ronda con las cartas del jugador y del crupier (ver función más adelante)
+            mostrarCartasJugador(cartasJuego2) # segunda ronda
             saldo = jugarRonda(cartasJuego2, crupierCartas, apuesta, saldo)
         else:
-            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo)
+            saldo = jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo) # El usuario no dividió la mano
         usuario[3] = saldo
         actualizarSaldo(usuario)
 
@@ -488,28 +493,28 @@ def puedeDividir(cartas):
     return len(cartas) == 2 and cartas[0].split()[0] == cartas[1].split()[0]
 
 def dividirJugada(cartas, saldo, apuesta):
-    if len(cartas) != 2 or cartas[0].split()[0] != cartas[1].split()[0]:
+    if len(cartas) != 2 or cartas[0].split()[0] != cartas[1].split()[0]: # verifica si las cartas son iguales y por lo tanto se pueden dividir
         print("No puedes dividir la jugada en este momento.")
         return cartas, saldo
 
-    if saldo < apuesta:
+    if saldo < apuesta: # Si el saldo no es suficiente para dividir
         print("Saldo insuficiente para dividir la jugada.")
         return cartas, saldo
 
-    nuevaCarta1 = generarCarta()
+    nuevaCarta1 = generarCarta() # Se llama a la función generarCarta para generar las dos nuevas cartas en caso de que sí se pueda dividir
     nuevaCarta2 = generarCarta()
 
     print("Dividiendo la jugada...")
     print(f"Juego 1: {cartas[0]} y {nuevaCarta1}")
     print(f"Juego 2: {cartas[1]} y {nuevaCarta2}")
 
-    cartasJuego1 = [cartas[0], nuevaCarta1]
+    cartasJuego1 = [cartas[0], nuevaCarta1] # Se combinan las nuevas cartas con las que ya habían
     cartasJuego2 = [cartas[1], nuevaCarta2]
 
     return cartasJuego1, cartasJuego2, saldo - apuesta
 
 def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
-    while True:
+    while True: # este ciclo se repite hasta que el jugador pierda o decida salir
         accion = input("¿Deseas pedir una nueva carta 1 o para detener el juego 2? ").upper()
         if accion == '1':
             nuevaCarta = generarCarta()
@@ -520,15 +525,16 @@ def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
                 print("Te pasaste de 21. Pierdes.")
                 saldo -= apuesta
                 break
+    # con el fragmente de código anterior, si el jugador elige pedir una nueva carta, se genera una nueva carta usando la función "generarCarta", se muestra al jugador, se agrega a la lista "jugadorCartas" y se muestra la mano actual. Si el valor total de la mano del jugador supera 21, el jugador pierde la ronda y se reduce el saldo en la cantidad de la apuesta, luego se rompe el ciclo
         elif accion == '2':
             break
         else:
             print("Opción no válida. Ingresa 1 para pedir una nueva carta o 2 para detener el juego.")
 
-    if valorMano(jugadorCartas) <= 21:
+    if valorMano(jugadorCartas) <= 21: # Al detener el juego, esta función verifica el valor de las manos
         print("Turno del crupier...")
         print(f"La carta oculta del crupier es: {crupierCartas[1]}")
-        while valorMano(crupierCartas) < 17:
+        while valorMano(crupierCartas) < 17: # El crupier pide carta en la medida en que sus cartas suman menos de 17
             nuevaCarta = generarCarta()
             print(f"El crupier recibe: {nuevaCarta}")
             crupierCartas.append(nuevaCarta)
@@ -546,16 +552,16 @@ def jugarRonda(jugadorCartas, crupierCartas, apuesta, saldo):
             print("¡Ganaste!")
         else:
             print("Empate. Se devuelve tu apuesta.")
-
+# COn el fragmento anterior se comparan los valores de las cartas del usuario y del crupier para determinar quién gana
     print(f"Tu saldo actual es: {saldo}")
     return saldo
 
 
 def mostrarMaquinaTragamonedas(figuras):
     print("Este es el resultado")
-    time.sleep(1.5)
+    time.sleep(1.5) # Con este método se hace pausa de 1.5 segundos, para dar la sensación de que la máquina está mostrando el resultado poco a poco
     for figura in figuras:
-        print(figura, end=' ')
+        print(figura, end=' ') # El ciclo "for" recorre cada elemento de la lista figuras. "End=' '" se utiliza para que la impresión de las figuras no salte de línea después de cada una, lo que crea la apariencia de estar impresas una al lado de la otra
         time.sleep(1.5)
     print()
 
@@ -566,7 +572,8 @@ def jugarMaquinaTragamonedas(usuario):
     acumulado = float(configAvanzada[2].strip())
 
     while True:
-        apuesta = float(input(f"{usuario[2]} cuanto desea apostar? Tu saldo es de: {saldoActual}: "))
+        apuesta = float(input(f"{usuario[2]} cuanto desea apostar? Tu saldo es de: {saldoActual}: ")) #Se solicita al usuario la cantidad que desea apostar
+        # la siguiente estructura de decisión determina si el usuario tiene un saldo mínimo que le permita jugar
         if saldoActual < apuestaMinima:
             print("No tienes suficiente dinero para jugar.")
             return
@@ -578,7 +585,7 @@ def jugarMaquinaTragamonedas(usuario):
             print(f"Saldo actual: {saldoActual}")
             input("Presione Enter para jalar la palanca e iniciar el juego.")
 
-            figuras = [random.choice(["@", "#", "+", "7"]) for _ in range(3)]
+            figuras = [random.choice(["@", "#", "+", "7"]) for _ in range(3)] # Símbolos aleatorios que van a servir para la máquina tragamonedas, se almacenan en la lista "figuras"
 
             figuras = ["@", "7", "#", "+"]
             if cantidadJugadas == 5:
@@ -591,10 +598,11 @@ def jugarMaquinaTragamonedas(usuario):
                 resultadoFigura = ["7"] * 3
                 cantidadJugadas = 0
             else:
-                resultadoFigura = [random.choice(figuras) for _ in range(3)]
+                resultadoFigura = [random.choice(figuras) for _ in range(3)] # Si no se cumple ninguna de las opciones anteriores, se generan figuras aleatorias
 
-            mostrarMaquinaTragamonedas(resultadoFigura)
-
+            mostrarMaquinaTragamonedas(resultadoFigura) # Se llama a la función anterior (más arriba en esta código) que permite mostrar el resultado
+            
+            # la siguiente estructura de decisión evalúa los diferentes resultados y establece el nuevo saldo dado los resultados
             if resultadoFigura.count("@") == 3:
                 saldoActual += apuesta
                 print("¡Recuperaste tu inversión!")
@@ -613,12 +621,13 @@ def jugarMaquinaTragamonedas(usuario):
 
             cantidadJugadas += 1
             
+            #Se actualizan los datos del usuario dados los resultados del juego
             usuario[3] = saldoActual
             actualizarSaldo(usuario)
             modificarConfigAvanzada(str(acumulado),3)
             cargaConfigAvanzada()
 
-        print(f"{usuario[2]} tu saldo actual es de: {saldoActual}")
+        print(f"{usuario[2]} tu saldo actual es de: {saldoActual}") # Se muestra el nuevo saldo al usuario
         jugarNuevamente = input("¿Deseas jugar nuevamente? (1 Sí o 2 No): ")
         if jugarNuevamente != '1':
             break
