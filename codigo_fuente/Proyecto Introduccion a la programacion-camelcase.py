@@ -1,5 +1,6 @@
 #Proyecto Introduccion a la programacion 
 #Autor Grupo 6 
+#Problema Crear un programa que tenga un menu con 4 opciones para un casino crear un usuario y registrar, se debe solicitar al usuario que desea realizar
 
 #Se importan las librerías que permiten crear un password; crear y leer archivos (entre otras operaciones con archivos); crear números aleatorios y funciones relacionadas con el tiempo (que permitirán incluir intervalos de tiempo de respuesta)
 import getpass 
