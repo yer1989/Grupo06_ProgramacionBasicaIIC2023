@@ -52,7 +52,7 @@ def crearUsuario(usuario) :
         carpetaPadre = os.path.join(os.getcwd(), os.pardir, nombreCarpeta)
 
         if not os.path.exists(carpetaPadre):
-            os.makedirs(carpetaPadre)
+            os.makedirs(carpetaPadre) # Si la carpeta no existe, se crea
         else:
             return 0
 # Lo anterior construye la ruta de la carpeta padre utilizando el nombre del usuario, se verifica si la carpeta ya existe. Si no existe, se crea. Si la carpeta ya existe, la función devuelve 0 (el usuario ya existe)
