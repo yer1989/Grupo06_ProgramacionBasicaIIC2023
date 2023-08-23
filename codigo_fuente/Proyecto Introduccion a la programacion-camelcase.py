@@ -120,7 +120,7 @@ def registroUsuario() :
 #ciclo que se repite hasta que el usuario ingrese un nombre
     op = ""
     
-    while len(op.strip()) == 0 :
+    while len(op.strip()) == 0 : # Se borran los espacios en blanco
         op= input("Ingrese su nombre: ")
         if len(op.strip()) == 0 :
             print("Por favor, ingrese un nombre, el campo no puede quedar vacio.")
