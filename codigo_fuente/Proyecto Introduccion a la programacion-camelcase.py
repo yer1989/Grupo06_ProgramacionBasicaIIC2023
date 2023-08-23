@@ -290,7 +290,7 @@ def dreamWorldCasino():
                         print("Reglas MaquinaTragamonedas")
                         print("Primer paso:Antes de empezar, debes elegir cuánto deseas apostar por giro")
                         print("Segundo paso: Presiona enter para jalar la palanca")
-                        print("Tercer paso: Espera el resultado)
+                        print("Tercer paso: Espera el resultado")
                         jugarMaquinaTragamonedas(usrList)
                     elif opcion == "3":
                         print("Volviendo al menú principal")
