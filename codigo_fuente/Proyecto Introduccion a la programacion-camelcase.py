@@ -130,7 +130,7 @@ def registroUsuario() :
     monto = 0  # Se crea la variable "monto" y con el siguiente ciclo se solicita al usuario que ingrese un monto
     op = ""
     contador = 0 #Este contador mide el número de intentos
-    while monto < int(configAvanzada[5].strip()):
+    while monto < float(configAvanzada[5].strip()):
             divisa = ""
 
 #Se le solicita al usuario que escoja el tipo de divisa, y dependiendo de la divisa se establece el monto mínimo
@@ -151,18 +151,18 @@ def registroUsuario() :
                 print("2.Colones")
                 op = float(input("Ingrese un monto a depositar en su cuenta: "))
                 contador += 1 
-                monto = op / int(configAvanzada[0].strip())
+                monto = op / float(configAvanzada[0].strip())
 
             elif divisa == 3:
                 print("3.Bitcoin")
                 op = float(input("Ingrese un monto a depositar en su cuenta: "))
                 contador += 1 
-                monto = op * int(configAvanzada[1].strip())
+                monto = op * float(configAvanzada[1].strip())
 
             else: 
                 print("Por favor, seleccione una opcion valida.")
 
-            if monto < int(configAvanzada[5].strip()):
+            if monto < float(configAvanzada[5].strip()):
                 print(f"Monto a depositar no puede ser menor a {configAvanzada[5].strip()}, por favor intente de nuevo.")
 
             if contador == 3:
