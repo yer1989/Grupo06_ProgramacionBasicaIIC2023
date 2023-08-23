@@ -288,9 +288,9 @@ def dreamWorldCasino():
                         juegoBlackJack(usrList)
                     elif opcJuego == "2":
                         print("Reglas MaquinaTragamonedas")
-                        print("Antes de empezar, debes elegir cuánto deseas apostar por giro. Esto se hace ajustando el valor de la moneda o la apuesta por línea en la máquina.")
-                        print("Presiona enter para jalar la palanca")
-                        print("Espera el resultado)
+                        print("Primer paso:Antes de empezar, debes elegir cuánto deseas apostar por giro")
+                        print("Segundo paso: Presiona enter para jalar la palanca")
+                        print("Tercer paso: Espera el resultado)
                         jugarMaquinaTragamonedas(usrList)
                     elif opcion == "3":
                         print("Volviendo al menú principal")
